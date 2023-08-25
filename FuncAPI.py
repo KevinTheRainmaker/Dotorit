@@ -1,7 +1,7 @@
 import tensorflow as tf
 import matplotlib.pyplot as plt
 import numpy as np
-from keras.layers import(Input, Softmax, Dense, Bidirectional, LSTM, Concatenate, concatenate, Embedding, Dropout, BatchNormalization)
+from keras.layers import(Input, Softmax, Dense, Bidirectional, LSTM, Concatenate, concatenate, Embedding, Dropout, BatchNormalization, Flatten)
 
 
 EMBEDDING_DIM=256
@@ -44,11 +44,11 @@ Output_category = MLP_Block(output_dim = 128, name='category_output_layer', loc=
 Output_price = MLP_Block(output_dim = 128, name='price_output_layer', loc='decoder', final_dim=1, final_activation='sigmoid')
 
 
-input_text = tf.keras.Input(shape=[MAXLEN, NUM_WORDS])
+input_text = tf.keras.Input(shape=[MAXLEN])
 input_image = tf.keras.Input(shape=[2048])
 
 text = Embedding(NUM_WORDS, EMBEDDING_DIM, input_length=MAXLEN)(input_text)
-text = Bidirectional(LSTM(16, return_sequences=False))(text[1,:,:,:])
+text = Bidirectional(LSTM(32, return_sequences=False))(text)
 
 txt = Text_processing(text)
 img = Image_processing(input_image)
